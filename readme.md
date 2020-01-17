@@ -29,6 +29,28 @@ Fetching this extra data allows us to extend the basic methods for validating us
 
 On login `$auth.getUserData()` will be triggered
 
+### Install
+
+```javascript
+import Vue from "vue";
+import { Auth0Plugin } from "@bcwdev/auth0-vue";
+// you will get these from your auth0 dashboard
+import { domain, clientId, audience } from "./authconfig";
+
+Vue.use(Auth0Plugin, {
+  domain,
+  clientId,
+  audience,
+  onRedirectCallback: appState => {
+    router.push(
+      appState && appState.targetUrl
+        ? appState.targetUrl
+        : window.location.pathname
+    );
+  }
+});
+```
+
 ### \$auth
 
 You can access any of the following state properties directly from your vue components using `this.$auth`
