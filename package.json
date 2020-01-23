@@ -1,6 +1,6 @@
 {
   "name": "@bcwdev/auth0-vue",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Auth0 wrapper for vue.js ",
   "main": "index.js",
   "files": [
