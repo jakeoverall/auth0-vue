@@ -6,7 +6,19 @@ const DEFAULT_REDIRECT_CALLBACK = () =>
 
 let instance;
 
-/** Returns the current instance of the SDK */
+/** Returns the current instance of the SDK 
+ * @returns {{
+ loading: boolean,
+ isAuthenticated: boolean,
+ user: {},
+ userInfo: {},
+ identity: {},
+ bearer: string,
+ auth0Client: object,
+ popupOpen: boolean,
+ error: Error
+ * }}
+*/
 export const getInstance = () => instance;
 
 /** Creates an instance of the Auth0 SDK. If one has already been created, it returns that instance */
@@ -217,15 +229,25 @@ export const authGuard = (to, from, next) => {
     }
   });
 };
-export const onAuth = () => {
+/**
+ * Promise resolves if able to authenticate
+ * @param {function} [cb]
+ */
+export const onAuth = cb => {
   return new Promise((resolve, reject) => {
     const authService = getInstance();
     if (authService.isAuthenticated) {
+      if (typeof cb == "function") {
+        cb();
+      }
       return resolve();
     }
     authService.$watch("loading", loading => {
       if (authService.isAuthenticated === false) {
         return reject();
+      }
+      if (typeof cb == "function") {
+        cb();
       }
       return resolve();
     });
