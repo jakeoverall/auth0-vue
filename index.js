@@ -238,7 +238,7 @@ export const onAuth = cb => {
     const authService = getInstance();
     if (authService.isAuthenticated) {
       if (typeof cb == "function") {
-        cb();
+        cb(authService);
       }
       return resolve();
     }
@@ -247,7 +247,7 @@ export const onAuth = cb => {
         return reject();
       }
       if (typeof cb == "function") {
-        cb();
+        cb(authService);
       }
       return resolve();
     });
