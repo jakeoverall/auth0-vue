@@ -205,30 +205,18 @@ export const useAuth0 = (
 
   return instance;
 };
-
-export const authGuard = (to, from, next) => {
-  const fn = () => {
-    // If the user is authenticated, continue with the route
-    if (instance.isAuthenticated) {
+export async function authGuard(to, from, next) {
+  try {
+    const authService = getInstance();
+    await onAuth();
+    if (authService.isAuthenticated) {
       return next();
     }
-
-    // Otherwise, log in
-    instance.loginWithRedirect({ appState: { targetUrl: to.fullPath } });
-  };
-
-  // If loading has already finished, check our auth state using `fn()`
-  if (!instance.loading) {
-    return fn();
+  } catch (e) {
+    return instance.loginWithRedirect({ appState: { targetUrl: to.fullPath } });
   }
+}
 
-  // Watch for the loading property to change before we check isAuthenticated
-  instance.$watch("loading", loading => {
-    if (loading === false) {
-      return fn();
-    }
-  });
-};
 /**
  * Promise resolves if able to authenticate
  * @param {function} [cb]
