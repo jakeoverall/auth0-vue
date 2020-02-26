@@ -62,7 +62,7 @@ export const useAuth0 = (
         }
 
         this.user = await this.auth0Client.getUser();
-        this.getUserData();
+        await this.getUserData();
         this.isAuthenticated = true;
       },
       /** Handles the callback when logging in using a redirect */
@@ -71,8 +71,8 @@ export const useAuth0 = (
         try {
           await this.auth0Client.handleRedirectCallback();
           this.user = await this.auth0Client.getUser();
+          await this.getUserData();
           this.isAuthenticated = true;
-          this.getUserData();
         } catch (e) {
           this.error = e;
         } finally {
