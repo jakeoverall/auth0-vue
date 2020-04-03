@@ -20,6 +20,7 @@ let instance;
  * }}
 */
 export const getInstance = () => instance;
+export const $auth = () => instance;
 
 /** Creates an instance of the Auth0 SDK. If one has already been created, it returns that instance */
 export const useAuth0 = (
@@ -158,7 +159,9 @@ export const useAuth0 = (
         }
       },
       /** Logs the user out and removes their session on the authorization server */
-      logout(o) {
+      logout(o = {
+        redirectTo: window.location.origin
+      }) {
         let logout = this.auth0Client.logout(o);
         this.bearer = "";
         this.user = {};
@@ -242,37 +245,41 @@ export const onAuth = cb => {
   });
 };
 
-function b64DecodeUnicode(str) {
-  return decodeURIComponent(
-    atob(str).replace(/(.)/g, function(m, p) {
-      var code = p
-        .charCodeAt(0)
-        .toString(16)
-        .toUpperCase();
-      if (code.length < 2) {
-        code = "0" + code;
-      }
-      return "%" + code;
-    })
-  );
-}
-function decodeToken(str = "") {
-  str = str.split(".")[1];
-  var output = str.replace(/-/g, "+").replace(/_/g, "/");
-  switch (output.length % 4) {
-    case 0:
-      break;
-    case 2:
-      output += "==";
-      break;
-    case 3:
-      output += "=";
-      break;
-    default:
-      throw "Illegal base64url string!";
-  }
-
+function b64DecodeUnicode(str = ".") {
   try {
+    return decodeURIComponent(
+      atob(str).replace(/(.)/g, function (m, p) {
+        var code = p
+          .charCodeAt(0)
+          .toString(16)
+          .toUpperCase();
+        if (code.length < 2) {
+          code = "0" + code;
+        }
+        return "%" + code;
+      })
+    );
+  } catch (e) {
+    return "";
+  }
+}
+function decodeToken(str = ".") {
+  try {
+    str = str.split(".")[1];
+    var output = str.replace(/-/g, "+").replace(/_/g, "/");
+    switch (output.length % 4) {
+      case 0:
+        break;
+      case 2:
+        output += "==";
+        break;
+      case 3:
+        output += "=";
+        break;
+      default:
+        throw "Illegal base64url string!";
+    }
+
     return b64DecodeUnicode(output);
   } catch (err) {
     return atob(output);
