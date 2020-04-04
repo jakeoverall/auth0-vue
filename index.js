@@ -1,26 +1,22 @@
 import createAuth0Client from "@auth0/auth0-spa-js";
-
+import { authProvider } from "./AuthProvider";
 /** Define a default action to perform after authentication */
 const DEFAULT_REDIRECT_CALLBACK = () =>
   window.history.replaceState({}, document.title, window.location.pathname);
 
+/**
+ * @type {authProvider}
+ */
 let instance;
 
 /** Returns the current instance of the SDK 
- * @returns {{
- loading: boolean,
- isAuthenticated: boolean,
- user: {},
- userInfo: {},
- identity: {},
- bearer: string,
- auth0Client: object,
- popupOpen: boolean,
- error: Error
- * }}
+ * @returns {authProvider}
 */
 export const getInstance = () => instance;
-export const $auth = () => instance;
+/** Returns the current instance of the SDK 
+ * @returns {authProvider}
+*/
+export const $auth = instance;
 
 /** Creates an instance of the Auth0 SDK. If one has already been created, it returns that instance */
 export const useAuth0 = (
