@@ -51,6 +51,9 @@ export const useAuth0 = (
 
         try {
           await this.auth0Client.loginWithPopup(o);
+          this.user = await this.auth0Client.getUser();
+          await this.getUserData();
+          this.isAuthenticated = true;
         } catch (e) {
           // eslint-disable-next-line
           console.error(e);
@@ -58,9 +61,6 @@ export const useAuth0 = (
           this.popupOpen = false;
         }
 
-        this.user = await this.auth0Client.getUser();
-        await this.getUserData();
-        this.isAuthenticated = true;
       },
       /** Handles the callback when logging in using a redirect */
       async handleRedirectCallback() {
