@@ -46,7 +46,9 @@ export const useAuth0 = (
     },
     methods: {
       /** Authenticates the user using a popup window */
-      async loginWithPopup(o) {
+      async loginWithPopup(o = {
+        returnTo: window.location.origin
+      }) {
         this.popupOpen = true;
 
         try {
@@ -77,7 +79,9 @@ export const useAuth0 = (
         }
       },
       /** Authenticates the user using the redirect method */
-      loginWithRedirect(o) {
+      loginWithRedirect(o = {
+        returnTo: window.location.href
+      }) {
         return this.auth0Client.loginWithRedirect(o);
       },
       /** Returns all the claims present in the ID token */
