@@ -1,12 +1,10 @@
 {
   "name": "@bcwdev/auth0-vue",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Auth0 wrapper for vue.js 2 or 3 ",
   "main": "index.js",
   "files": [
-    "index.js",
-    "AuthProvider.js",
-    "vue2.js"
+    "*.js"
   ],
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.11.0"
