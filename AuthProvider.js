@@ -4,7 +4,6 @@
  */
 class AuthProvider {
   constructor() {
-
     this.loading = true;
     this.isAuthenticated = false;
     this.user = {};
