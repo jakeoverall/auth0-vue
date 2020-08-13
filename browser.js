@@ -272,11 +272,6 @@ class AuthPlugin extends EventEmitter {
 /**
  * @param {{ onRedirectCallback: () => void; domain: string, audience: string, clientId: string  }} options
  */
-function initializeAuth(options) { return new AuthPlugin(options) }
-
-export const $AuthProvider = {
-  initializeAuth
-}
 
 function b64DecodeUnicode(str = ".") {
   try {
@@ -317,4 +312,10 @@ function decodeToken(str = ".") {
   } catch (err) {
     return atob(output);
   }
+}
+
+function initializeAuth(options) { return new AuthPlugin(options) }
+
+const $AuthProvider = {
+  initializeAuth
 }
