@@ -4,7 +4,7 @@
   "description": "Auth0 wrapper for vue.js 2 or 3 ",
   "main": "index.js",
   "scripts": {
-    "build": "babel index.js -o auth0provider.min.js"
+    "build": "npx babel index.js -o auth0provider.min.js"
   },
   "files": [
     "*.js"
@@ -26,7 +26,8 @@
   "author": "Jake Overall <joverall22@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0"
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0"
   }
 }
