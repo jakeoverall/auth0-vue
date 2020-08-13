@@ -4,7 +4,7 @@
   "description": "Auth0 wrapper for vue.js 2 or 3 ",
   "main": "index.js",
   "scripts": {
-    "build": "npx babel browser.js -o auth0provider.v0.0.1.min.js"
+    "build": "npx babel browser.js -o auth0provider.v0.0.2.min.js"
   },
   "files": [
     "*.js"
@@ -28,6 +28,8 @@
   "devDependencies": {
     "@babel/cli": "^7.10.5",
     "@babel/core": "^7.11.1",
-    "@babel/preset-env": "^7.11.0"
+    "@babel/plugin-transform-runtime": "^7.11.0",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/runtime": "^7.11.2"
   }
 }
