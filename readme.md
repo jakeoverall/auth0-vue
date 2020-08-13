@@ -1,4 +1,38 @@
-# @bcwdev/auth0-vue
+# @bcwdev/auth0-vue 
+
+### Vue3.js Updates
+
+```AuthService.js
+export const AuthService = initializeAuth({
+  domain,
+  clientId,
+  audience,
+  onRedirectCallback: appState => {
+    router.push(
+      appState && appState.targetUrl
+        ? appState.targetUrl
+        : window.location.pathname
+    )
+  }
+})
+
+AuthService.on(AuthService.AUTH_EVENTS.AUTHENTICATED, async () => {
+  AppState.user = AuthService.user
+  $resource.defaultHeaders.Authorization = AuthService.bearer
+  await profileService.getProfile()
+})
+AuthService.on(AuthService.AUTH_EVENTS.LOADED, () => {
+  AppState.$auth = reactive(AuthService)
+})
+
+```
+
+#### CDN
+```html
+<script src="https://cdn.jsdelivr.net/gh/jakeoverall/auth0-vue/auth0provider.min.js">
+```
+
+----------------------------------------------------
 
 This library is a small wrapper around auth0-spa-js. It is extended beyond the simple scale that is used in the auth0 tutorial. Added features include getting the `userInfo` and `identity` on login.
 
@@ -29,11 +63,13 @@ Fetching this extra data allows us to extend the basic methods for validating us
 
 On login `$auth.getUserData()` will be triggered
 
-### Install
+## Vue 2 Only
+
+### Install 
 
 ```javascript
 import Vue from "vue";
-import { Auth0Plugin } from "@bcwdev/auth0-vue";
+import { Auth0Plugin } from "@bcwdev/auth0-vue/vue2";
 // you will get these from your auth0 dashboard
 import { domain, clientId, audience } from "./authconfig";
 

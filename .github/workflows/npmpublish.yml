@@ -8,7 +8,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 13
-      - run: npm install
+      - run: npm install --production=false
+      - run: npm build
       - run: npm test
       - uses: JS-DevTools/npm-publish@v1
         with:

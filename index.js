@@ -74,14 +74,23 @@ class AuthPlugin extends EventEmitter {
   }) {
     return this.auth0Client.loginWithRedirect(o);
   }
-  /** Returns all the claims present in the ID token */
+  /**
+   * Returns all the claims present in the ID token
+   * @param {import("@auth0/auth0-spa-js").GetIdTokenClaimsOptions} o
+   */
   getIdTokenClaims(o) {
     return this.auth0Client.getIdTokenClaims(o);
   }
-  /** Returns the access token. If the token is invalid or missing, a new one is retrieved */
+  /**
+   * Returns the access token. If the token is invalid or missing, a new one is retrieved
+   * @param {import("@auth0/auth0-spa-js").GetTokenSilentlyOptions} [o]
+   */
   getTokenSilently(o) {
     return this.auth0Client.getTokenSilently(o);
   }
+  /**
+   * @param {string[] | string} permissions
+   */
   hasPermissions(permissions) {
     if (!Array.isArray(permissions)) {
       permissions = [permissions];
@@ -91,13 +100,19 @@ class AuthPlugin extends EventEmitter {
     }
     while (permissions.length) {
       let next = permissions.pop();
-      let found = this.identity.permissions.find(p => p == next);
+      let /**
+         * @param {any} p
+         */
+        found = this.identity.permissions.find(p => p == next);
       if (!found) {
         return false;
       }
     }
     return true;
   }
+  /**
+   * @param {string[] | string} roles
+   */
   hasRoles(roles) {
     if (!Array.isArray(roles)) {
       roles = [roles];
@@ -107,7 +122,10 @@ class AuthPlugin extends EventEmitter {
     }
     while (roles.length) {
       let next = roles.pop();
-      let found = this.userInfo.roles.find(r => r == next);
+      let /**
+         * @param {any} r
+         */
+        found = this.userInfo.roles.find(r => r == next);
       if (!found) {
         return false;
       }
@@ -115,12 +133,18 @@ class AuthPlugin extends EventEmitter {
     return true;
   }
 
+  /**
+   * @param {string} token
+   */
   async getIdentityClaims(token) {
     this.identity = JSON.parse(decodeToken(token));
     return this.identity;
   }
 
-  /** Gets the access token using a popup window */
+  /**
+   * Gets the access token using a popup window
+   * @param {import("@auth0/auth0-spa-js").GetTokenWithPopupOptions} o
+   */
   getTokenWithPopup(o) {
     return this.auth0Client.getTokenWithPopup(o);
   }
@@ -163,7 +187,10 @@ class AuthPlugin extends EventEmitter {
     return logout;
   }
 
-  /** Use this lifecycle method to instantiate the SDK client */
+  /**
+   * Use this lifecycle method to instantiate the SDK client
+   * @param {{ domain?: any; clientId?: any; audience?: any; redirectUri?: any; onRedirectCallback?: any; }} options
+   */
   async created(options) {
     this.emit(this.AUTH_EVENTS.LOADING)
     // Create a new instance of the SDK client using members of the given options object
@@ -204,11 +231,16 @@ class AuthPlugin extends EventEmitter {
  * @param {{ onRedirectCallback: () => void; domain: string, audience: string, clientId: string  }} options
  */
 export function initializeAuth(options) { return new AuthPlugin(options) }
-export const $auth = () => { if (!instance) { throw new Error("Auth Plugin must be initialized prior to importing $auth") }; return instance }
+const _auth = () => { if (!instance) { throw new Error("Auth Plugin must be initialized prior to importing $auth") }; return instance }
 
+/**
+ * @param {{ fullPath: any; }} to
+ * @param {any} from
+ * @param {() => any} next
+ */
 export async function authGuard(to, from, next) {
   try {
-    const authService = $auth();
+    const authService = _auth();
     await onAuthLoaded();
     if (authService.isAuthenticated) {
       return next();
@@ -225,7 +257,7 @@ export async function authGuard(to, from, next) {
  */
 export const onAuthLoaded = cb => {
   return new Promise((resolve, reject) => {
-    const authService = $auth();
+    const authService = _auth();
     if (!authService.loading) {
       if (typeof cb == 'function') { cb(authService) }
       return resolve(authService);
