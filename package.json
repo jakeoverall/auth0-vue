@@ -4,7 +4,7 @@
   "description": "Auth0 wrapper for vue.js 2 or 3 ",
   "main": "index.js",
   "scripts": {
-    "build": "npx babel index.js -o auth0provider.v1.min.js"
+    "build": "npx babel browser.js -o auth0provider.v0.0.1.min.js"
   },
   "files": [
     "*.js"
